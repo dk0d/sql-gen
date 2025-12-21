@@ -71,6 +71,9 @@ struct Cli {
     // /// Overwrite files flag (if set, files will be overwritten).
     // #[arg(long, action = clap::ArgAction::SetTrue)]
     // overwrite_files: bool,
+    /// Add serde derives/renames to models and enums.
+    #[arg(short, long, action = clap::ArgAction::SetTrue, default_value_t=false)]
+    pub serde: bool,
 }
 
 #[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Debug, ValueEnum, Default)]
@@ -144,6 +147,7 @@ async fn generate_rust_from_database(args: &Cli) -> DbSetsFsWriter {
     options.add_enums(&enums);
     options.set_model_derives(&args.model_derives);
     options.set_enum_derives(&args.enum_derives);
+    options.set_serde(args.serde);
 
     let structs_mapped =
         translators::convert_table_to_struct::convert_tables_to_struct(tables, &options);

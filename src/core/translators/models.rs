@@ -15,9 +15,15 @@ pub struct CodegenOptions {
     pub table_column_overrides: HashMap<(TableName, ColumnName), ColumnToFieldOptions>,
     pub column_overrides: HashMap<ColumnName, ColumnToFieldOptions>,
     pub type_overrides: HashMap<TypeName, ColumnToFieldOptions>,
+    pub serde: bool,
 }
 
 impl CodegenOptions {
+
+    pub fn set_serde(&mut self, serde: bool) {
+        self.serde = serde;
+    }
+    
     pub fn add_table_column_override(
         &mut self,
         table_name: &str,

@@ -89,6 +89,16 @@ pub fn enum_variant_rename_attribute(rename_name: impl Into<String>) -> RustDbSe
     }
 }
 
+pub fn enum_variant_rename_attribute_serde(rename_name: impl Into<String>) -> RustDbSetAttribute {
+    RustDbSetAttribute {
+        attribute_name: "serde".to_string(),
+        attribute_args: vec![RustDbSetAttributeArg {
+            name: "rename".to_string(),
+            value: Some(rename_name.into()),
+        }],
+    }
+}
+
 #[derive(Debug, PartialEq, Default, Clone)]
 pub struct RustDbSetAttributeArg {
     pub name: String,

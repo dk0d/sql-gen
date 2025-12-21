@@ -343,6 +343,54 @@ pub struct Palette {
         Ok(())
     }
 
+    /// Test serde derives for an enum type using the enum-derive flag.
+    #[tokio::test]
+    async fn test_enum_derives_serde_flag() -> Result<(), Box<dyn Error>> {
+        let (pool, uri) = setup_pg_db().await;
+        let statement_1 = "CREATE TYPE color AS ENUM ('red', 'green', 'blue');";
+        let statement_2 = "
+            CREATE TABLE palette (
+                id SERIAL PRIMARY KEY,
+                favorite color NOT NULL
+            );
+        ";
+        query(statement_1).execute(&pool).await?;
+        query(statement_2).execute(&pool).await?;
+
+        let args = Cli::parse_from([
+            "sql-gen",
+            "--db-url",
+            uri.as_str(),
+            "--enum-derive",
+            "Debug,PartialEq",
+            "--serde",
+        ]);
+        let writer = generate_rust_from_database(&args).await;
+        let expected = r#"
+#[derive(Debug, PartialEq, serde::Serialize, serde::Deserialize)]
+#[sqlx(type_name = "color")]
+pub enum Color {
+    #[sqlx(rename = "red")]
+    #[serde(rename = "red")]
+    Red,
+    #[sqlx(rename = "green")]
+    #[serde(rename = "green")]
+    Green,
+    #[sqlx(rename = "blue")]
+    #[serde(rename = "blue")]
+    Blue,
+}
+
+#[derive(Debug, Clone, sqlx::FromRow)]
+pub struct Palette {
+    id: i32,
+    favorite: Color,
+}
+"#;
+        assert_eq!(writer.write_to_string().trim(), expected.trim());
+        Ok(())
+    }
+
     /// Test passing extra derives for the model using the model-derive flag.
     #[tokio::test]
     async fn test_model_derives_flag() -> Result<(), Box<dyn Error>> {
