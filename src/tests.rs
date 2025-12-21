@@ -381,7 +381,7 @@ pub enum Color {
     Blue,
 }
 
-#[derive(Debug, Clone, sqlx::FromRow)]
+#[derive(Debug, Clone, sqlx::FromRow, serde::Serialize, serde::Deserialize)]
 pub struct Palette {
     id: i32,
     favorite: Color,

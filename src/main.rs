@@ -90,6 +90,10 @@ pub enum DatabaseType {
     MySql,
 }
 
+fn clean_db_url(db_url: String) -> String {
+    db_url.replace("postgresql://", "postgres://")
+}
+
 async fn generate_rust_from_database(args: &Cli) -> DbSetsFsWriter {
     let database_type = if args.db_url.starts_with("postgres://") {
         DatabaseType::Postgres
@@ -145,7 +149,7 @@ async fn generate_rust_from_database(args: &Cli) -> DbSetsFsWriter {
     options.set_type_overrides_from_arg(&args.type_overrides);
     options.set_table_column_overrides_from_arg(&args.table_overrides);
     options.add_enums(&enums);
-    options.set_model_derives(&args.model_derives);
+    options.set_struct_derives(&args.model_derives);
     options.set_enum_derives(&args.enum_derives);
     options.set_serde(args.serde);
 
@@ -169,7 +173,9 @@ async fn generate_rust_from_database(args: &Cli) -> DbSetsFsWriter {
 
 #[tokio::main]
 async fn main() {
-    let args = Cli::parse();
+    let mut args = Cli::parse();
+    args.db_url = clean_db_url(args.db_url);
+    let args = args;
 
     let writer = generate_rust_from_database(&args).await;
 

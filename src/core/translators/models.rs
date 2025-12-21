@@ -19,11 +19,10 @@ pub struct CodegenOptions {
 }
 
 impl CodegenOptions {
-
     pub fn set_serde(&mut self, serde: bool) {
         self.serde = serde;
     }
-    
+
     pub fn add_table_column_override(
         &mut self,
         table_name: &str,
@@ -96,7 +95,7 @@ impl CodegenOptions {
         self.mode = mode;
     }
 
-    pub fn set_model_derives(&mut self, derives: &Option<Vec<String>>) {
+    pub fn set_struct_derives(&mut self, derives: &Option<Vec<String>>) {
         let mode_default = match self.mode {
             Mode::Sqlx => "sqlx::FromRow",
             Mode::Dbset => "db_set_macros::DbSet",

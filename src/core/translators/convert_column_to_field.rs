@@ -23,6 +23,8 @@ pub fn convert_column_to_field(
 
     let mut attributes = vec![];
 
+    
+
     if options.mode == Mode::Dbset {
         if column.is_auto_populated {
             attributes.push(auto_attribute());

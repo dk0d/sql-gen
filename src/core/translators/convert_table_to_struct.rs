@@ -52,6 +52,13 @@ pub fn convert_table_to_struct(table: Table, options: &CodegenOptions) -> RustDb
         })
         .collect();
 
+    let mut derives = options.struct_derives.clone();
+    if options.serde {
+        derives.extend_from_slice(&[
+            "serde::Serialize".to_string(),
+            "serde::Deserialize".to_string(),
+        ]);
+    }
     RustDbSetStruct {
         name: struct_name.to_string(),
         attributes: if options.mode == Mode::Dbset {
@@ -60,7 +67,7 @@ pub fn convert_table_to_struct(table: Table, options: &CodegenOptions) -> RustDb
             vec![]
         },
         fields,
-        derives: options.struct_derives.clone(),
+        derives,
         comment: table.table_comment.clone(),
     }
 }

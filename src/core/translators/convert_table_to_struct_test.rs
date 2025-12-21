@@ -5,7 +5,8 @@ use crate::{
         models::{
             db::{CustomEnum, CustomEnumVariant, Table, TableColumnBuilder},
             rust::{
-                auto_attribute, dbset_attribute_with_table_name, key_attribute, unique_attribute,
+                auto_attribute, dbset_attribute_with_table_name, key_attribute,
+                struct_field_rename_attribute, unique_attribute, RustDbSetAttribute,
                 RustDbSetField, RustDbSetStruct,
             },
         },
@@ -152,6 +153,73 @@ fn should_convert_table_with_each_column_attribute_type() {
                     field_name: "title".to_string(),
                     field_type: "String".to_string(),
                     attributes: vec![unique_attribute()],
+                    ..Default::default()
+                },
+                RustDbSetField {
+                    field_name: "description".to_string(),
+                    field_type: "String".to_string(),
+                    is_optional: true,
+                    attributes: vec![],
+                    ..Default::default()
+                },
+            ],
+            ..Default::default()
+        }
+    )
+}
+
+#[test]
+fn should_include_serde_struct() {
+    let table = Table {
+        table_name: "products".to_string(),
+        table_schema: Some("public".to_string()),
+        columns: vec![
+            TableColumnBuilder::new("id", "uuid", "uuid", Some("uuid::Uuid".to_string()))
+                .is_auto_populated()
+                .is_primary_key()
+                .build(),
+            TableColumnBuilder::new("title", "text", "text", Some("String".to_string()))
+                .is_unique()
+                .build(),
+            TableColumnBuilder::new("description", "text", "text", Some("String".to_string()))
+                .is_nullable()
+                .build(),
+        ],
+        ..Default::default()
+    };
+    let default_derives = Some(vec![
+        "Debug".to_string(),
+        "Clone".to_string(),
+        "sqlx::FromRow".to_string(),
+    ]);
+    let mut options = CodegenOptions::default();
+    options.set_struct_derives(&default_derives);
+    options.set_serde(true);
+
+    let rust_struct = convert_table_to_struct(table, &options);
+    assert_eq!(
+        rust_struct,
+        RustDbSetStruct {
+            name: "Product".to_string(),
+            derives: vec![
+                "Debug".to_string(),
+                "Clone".to_string(),
+                "sqlx::FromRow".to_string(),
+                "serde::Serialize".to_string(),
+                "serde::Deserialize".to_string()
+            ],
+            attributes: vec![],
+            fields: vec![
+                RustDbSetField {
+                    field_name: "id".to_string(),
+                    field_type: "uuid::Uuid".to_string(),
+                    attributes: vec![],
+                    ..Default::default()
+                },
+                RustDbSetField {
+                    field_name: "title".to_string(),
+                    field_type: "String".to_string(),
+                    attributes: vec![],
                     ..Default::default()
                 },
                 RustDbSetField {

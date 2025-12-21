@@ -79,6 +79,16 @@ pub fn enum_typename_attribute(type_name: impl Into<String>) -> RustDbSetAttribu
     }
 }
 
+pub fn struct_field_rename_attribute(rename_name: impl Into<String>) -> RustDbSetAttribute {
+    RustDbSetAttribute {
+        attribute_name: "sqlx".to_string(),
+        attribute_args: vec![RustDbSetAttributeArg {
+            name: "rename".to_string(),
+            value: Some(rename_name.into()),
+        }],
+    }
+}
+
 pub fn enum_variant_rename_attribute(rename_name: impl Into<String>) -> RustDbSetAttribute {
     RustDbSetAttribute {
         attribute_name: "sqlx".to_string(),
