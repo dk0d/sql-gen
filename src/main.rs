@@ -74,6 +74,10 @@ struct Cli {
     /// Add serde derives/renames to models and enums.
     #[arg(short, long, action = clap::ArgAction::SetTrue, default_value_t=false)]
     pub serde: bool,
+    // Make all struct fields private.
+    // #[arg(short, long, action = clap::ArgAction::SetTrue, default_value_t=false)]
+    // pub private_fields: bool,
+    // TODO: private_fields regex pattern?
 }
 
 #[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Debug, ValueEnum, Default)]

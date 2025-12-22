@@ -19,10 +19,10 @@ mod postgres {
             writer.write_to_string().trim(),
             r#"#[derive(Debug, Clone, sqlx::FromRow)]
 pub struct TestTable0 {
-    id: i32,
-    name: Option<String>,
-    description: Option<String>,
-    parent_id: Option<i32>,
+    pub id: i32,
+    pub name: Option<String>,
+    pub description: Option<String>,
+    pub parent_id: Option<i32>,
 }"#
             .to_string()
         );
@@ -78,11 +78,11 @@ pub enum TodoStatus {
 /// Table to store todo items with tags and status information.
 #[derive(Debug, Clone, sqlx::FromRow)]
 pub struct Todo {
-    id: i32,
-    title: String,
-    description: Option<String>,
-    tags: Vec<String>,
-    status: TodoStatus,
+    pub id: i32,
+    pub title: String,
+    pub description: Option<String>,
+    pub tags: Vec<String>,
+    pub status: TodoStatus,
 }
 "#
             .to_string()
@@ -128,11 +128,11 @@ CREATE TABLE todos (
             r#"
 #[derive(Debug, Clone, sqlx::FromRow)]
 pub struct Todo {
-    id: i32,
-    title: String,
-    description: Option<String>,
-    tags: Vec<String>,
-    status: String,
+    pub id: i32,
+    pub title: String,
+    pub description: Option<String>,
+    pub tags: Vec<String>,
+    pub status: String,
 }
 "#
             .to_string()
@@ -178,11 +178,11 @@ CREATE TABLE todos (
             r#"
 #[derive(Debug, Clone, sqlx::FromRow)]
 pub struct Todo {
-    id: i32,
-    title: String,
-    description: Option<String>,
-    tags: Vec<String>,
-    status: String,
+    pub id: i32,
+    pub title: String,
+    pub description: Option<String>,
+    pub tags: Vec<String>,
+    pub status: String,
 }
 "#
             .to_string()
@@ -247,17 +247,17 @@ pub enum TodoStatus {
 
 #[derive(Debug, Clone, sqlx::FromRow)]
 pub struct OtherTodosTable {
-    id: i32,
-    status: TodoStatus,
+    pub id: i32,
+    pub status: TodoStatus,
 }
 
 #[derive(Debug, Clone, sqlx::FromRow)]
 pub struct Todo {
-    id: i32,
-    title: String,
-    description: Option<String>,
-    tags: Vec<String>,
-    status: String,
+    pub id: i32,
+    pub title: String,
+    pub description: Option<String>,
+    pub tags: Vec<String>,
+    pub status: String,
 }
 
 
@@ -291,8 +291,8 @@ pub struct Todo {
         let expected = r#"
 #[derive(Debug, Clone, sqlx::FromRow)]
 pub struct TableOne {
-    id: i32,
-    data: Option<String>,
+    pub id: i32,
+    pub data: Option<String>,
 }
 "#;
         assert_eq!(writer.write_to_string().trim(), expected.trim());
@@ -335,8 +335,8 @@ pub enum Color {
 
 #[derive(Debug, Clone, sqlx::FromRow)]
 pub struct Palette {
-    id: i32,
-    favorite: Color,
+    pub id: i32,
+    pub favorite: Color,
 }
 "#;
         assert_eq!(writer.write_to_string().trim(), expected.trim());
@@ -383,8 +383,8 @@ pub enum Color {
 
 #[derive(Debug, Clone, sqlx::FromRow, serde::Serialize, serde::Deserialize)]
 pub struct Palette {
-    id: i32,
-    favorite: Color,
+    pub id: i32,
+    pub favorite: Color,
 }
 "#;
         assert_eq!(writer.write_to_string().trim(), expected.trim());
@@ -409,8 +409,8 @@ pub struct Palette {
         let expected = r#"
 #[derive(Debug, Clone, PartialEq)]
 pub struct Simple {
-    id: i32,
-    value: Option<String>,
+    pub id: i32,
+    pub value: Option<String>,
 }
 "#;
         assert_eq!(writer.write_to_string().trim(), expected.trim());
@@ -448,10 +448,10 @@ mod mysql {
             writer.write_to_string().trim(),
             r#"#[derive(Debug, Clone, sqlx::FromRow)]
 pub struct TestTable0 {
-    id: i32,
-    name: Option<String>,
-    description: Option<String>,
-    parent_id: Option<i32>,
+    pub id: i32,
+    pub name: Option<String>,
+    pub description: Option<String>,
+    pub parent_id: Option<i32>,
 }"#
             .to_string()
         );
@@ -494,11 +494,11 @@ pub enum TodoStatus {
 /// Table to store todo items with tags and status information.
 #[derive(Debug, Clone, sqlx::FromRow)]
 pub struct Todo {
-    id: i32,
-    title: String,
-    description: Option<String>,
-    tags: serde_json::JsonValue,
-    status: TodoStatus,
+    pub id: i32,
+    pub title: String,
+    pub description: Option<String>,
+    pub tags: serde_json::JsonValue,
+    pub status: TodoStatus,
 }
     "#
             .to_string()
@@ -537,11 +537,11 @@ pub struct Todo {
             r#"
 #[derive(Debug, Clone, sqlx::FromRow)]
 pub struct Todo {
-    id: i32,
-    title: String,
-    description: Option<String>,
-    tags: serde_json::JsonValue,
-    status: String,
+    pub id: i32,
+    pub title: String,
+    pub description: Option<String>,
+    pub tags: serde_json::JsonValue,
+    pub status: String,
 }
     "#
             .to_string()
@@ -597,17 +597,17 @@ pub enum OtherTodosTableStatus {
 
 #[derive(Debug, Clone, sqlx::FromRow)]
 pub struct OtherTodosTable {
-    id: i32,
-    status: OtherTodosTableStatus,
+    pub id: i32,
+    pub status: OtherTodosTableStatus,
 }
 
 #[derive(Debug, Clone, sqlx::FromRow)]
 pub struct Todo {
-    id: i32,
-    title: String,
-    description: Option<String>,
-    tags: serde_json::JsonValue,
-    status: String,
+    pub id: i32,
+    pub title: String,
+    pub description: Option<String>,
+    pub tags: serde_json::JsonValue,
+    pub status: String,
 }
     "#
             .to_string()

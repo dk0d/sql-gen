@@ -21,6 +21,8 @@ fn get_struct_fields_tokens(rust_struct: &RustDbSetStruct) -> Vec<TokenStream> {
     let mut struct_fields_tokens = vec![];
 
     for field in rust_struct.fields.iter() {
+        // TODO: make this configurable
+        let is_pub: TokenStream = quote! { pub };
         let field_name = sanitize_field_name(&field.field_name);
         //let field_type = format_ident!("{}", field.field_type);
         let field_type: syn::Path =
@@ -39,7 +41,7 @@ fn get_struct_fields_tokens(rust_struct: &RustDbSetStruct) -> Vec<TokenStream> {
 
         let field = quote! {
             #attributes
-            #field_name: #base_type
+            #is_pub #field_name: #base_type
         };
 
         struct_fields_tokens.push(field);

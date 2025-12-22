@@ -115,8 +115,8 @@ fn should_write_basic_struct_to_string() {
         content.to_string(),
         format_rust_content_string(
             "pub struct Product {
-            title: String,
-            description: Option<String>,
+            pub title: String,
+            pub description: Option<String>,
         }"
         )
     )
@@ -139,7 +139,7 @@ fn should_write_struct_with_vec_to_string() {
         content.to_string(),
         format_rust_content_string(
             "pub struct Product {
-                tags: Option<Vec<String>>,
+                pub tags: Option<Vec<String>>,
         }"
         )
     )
@@ -161,7 +161,7 @@ fn should_write_struct_with_reserved_field_names_to_string() {
         content.to_string(),
         format_rust_content_string(
             "pub struct Product {
-                r#type: String,
+                pub r#type: String,
         }"
         )
     )
@@ -185,7 +185,7 @@ fn should_write_struct_with_field_attributes_to_string() {
         format_rust_content_string(
             "pub struct Product {
             #[key]
-            id: Uuid,
+            pub id: Uuid,
         }"
         )
     )
@@ -210,7 +210,7 @@ fn should_write_struct_with_multiple_field_attributes_to_string() {
             "pub struct Product {
             #[auto]
             #[key]
-            id: Uuid,
+            pub id: Uuid,
         }"
         )
     )
