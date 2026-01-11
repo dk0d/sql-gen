@@ -1,6 +1,6 @@
 use crate::core::{
     models::rust::{
-        enum_typename_attribute, enum_variant_rename_attribute, RustDbSetEnum, RustDbSetEnumVariant,
+        RustDbSetEnum, RustDbSetEnumVariant, enum_typename_attribute, enum_variant_rename_attribute,
     },
     writers::test_helpers::format_rust_content_string,
 };

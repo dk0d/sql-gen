@@ -20,6 +20,7 @@ pub fn convert_data_type(udt_type: &str) -> Option<String> {
         "int8" | "bigint" | "bigserial" => Some("i64".to_string()),
         "void" => Some("()".to_string()),
         "jsonb" | "json" => Some("serde_json::Value".to_string()),
+        "inet" => Some("String".to_string()), //maybe?: std::net::IpAddr
         "text" | "varchar" | "name" => Some("String".to_string()),
         "time" => Some("chrono::NaiveTime".to_string()),
         "timestamp" => Some("chrono::NaiveDateTime".to_string()),
